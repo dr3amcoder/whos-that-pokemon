@@ -261,10 +261,19 @@ input {
 }
 
 .actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 0.75rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   margin-top: 1rem;
+}
+
+.actions button {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  min-width: 0;
+  padding: 0.75rem 0.65rem;
+  text-align: center;
 }
 
 .secondary-button {
@@ -388,6 +397,12 @@ input {
   padding: 0.75rem 0.9rem;
 }
 
+@media (max-width: 760px) {
+  .actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 560px) {
   .quiz-card {
     padding: 1.25rem;
@@ -408,6 +423,10 @@ input {
   .difficulty-options button,
   .guess-row button {
     width: 100%;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
   }
 
   .image-frame {
