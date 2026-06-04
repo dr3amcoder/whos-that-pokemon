@@ -14,7 +14,7 @@ The application:
 2. Displays the Pokémon as a silhouette.
 3. Allows the user to enter a guess.
 4. Checks whether the guess is correct.
-5. Reveals the Pokémon's name, image, types, and stats.
+5. Reveals the Pokémon's name, image, types, and stats after a correct guess or manual reveal.
 6. Lets the user load another random Pokémon and continue playing.
 
 ---
@@ -36,6 +36,7 @@ The application:
   - First letter
   - Pokémon type
   - Generation
+- Correct guesses reveal the Pokémon immediately
 - Reveal answer functionality
 - Next Pokémon functionality
 
@@ -212,7 +213,7 @@ This ensures answers are:
 
 ### 4. Reveal Pokémon Details
 
-When the player clicks **Reveal Answer**, the application displays:
+When the player guesses correctly or clicks **Reveal Answer**, the application displays:
 
 - Pokémon name
 - Official artwork
@@ -232,6 +233,7 @@ The player can reveal up to three hints before revealing the answer:
 - Generation
 
 Hints reset when the player moves to the next Pokémon or changes difficulty.
+Hints are hidden once the Pokémon has been revealed.
 
 ---
 

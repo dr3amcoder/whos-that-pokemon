@@ -86,6 +86,8 @@ const PokemonQuiz = () => {
 
     if (cleanGuess === pokemon.name.toLowerCase()) {
       setMessage('Correct! Great guess.');
+      setHintsUsed(0);
+      setIsRevealed(true);
     } else {
       setMessage('Not quite. Try again, or reveal the answer when you are ready.');
     }
@@ -93,6 +95,7 @@ const PokemonQuiz = () => {
 
   const handleReveal = () => {
     setIsRevealed(true);
+    setHintsUsed(0);
     setMessage(`It's ${pokemon.name}!`);
   };
 
@@ -150,6 +153,7 @@ const PokemonQuiz = () => {
           src={pokemon.image}
           alt={isRevealed ? pokemon.name : 'Mystery Pokemon silhouette'}
         />
+        {isRevealed && <p className="revealed-name">{pokemon.name}</p>}
       </div>
 
       <form className="guess-form" onSubmit={handleSubmit}>
@@ -185,7 +189,7 @@ const PokemonQuiz = () => {
         </button>
       </div>
 
-      {hintsUsed > 0 && (
+      {!isRevealed && hintsUsed > 0 && (
         <section className="hint-panel" aria-label="Hints">
           <h2>Hints</h2>
           <ul>
