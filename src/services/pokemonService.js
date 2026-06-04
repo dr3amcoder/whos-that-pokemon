@@ -1,7 +1,7 @@
 const API_URL = 'https://pokeapi.co/api/v2/pokemon';
 const FIRST_GENERATION_LIMIT = 151;
 
-export async function getRandomPokemon() {
+export const getRandomPokemon = async () => {
   const randomId = Math.floor(Math.random() * FIRST_GENERATION_LIMIT) + 1;
   const response = await fetch(`${API_URL}/${randomId}`);
 
@@ -25,4 +25,4 @@ export async function getRandomPokemon() {
       value: item.base_stat
     }))
   };
-}
+};

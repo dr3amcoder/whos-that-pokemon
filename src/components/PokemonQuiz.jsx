@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getRandomPokemon } from '../services/pokemonService.js';
 import PokemonStats from './PokemonStats.jsx';
 
-function PokemonQuiz() {
+const PokemonQuiz = () => {
   const [pokemon, setPokemon] = useState(null);
   const [guess, setGuess] = useState('');
   const [message, setMessage] = useState('');
@@ -10,7 +10,7 @@ function PokemonQuiz() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
-  async function loadPokemon() {
+  const loadPokemon = async () => {
     setIsLoading(true);
     setError('');
     setGuess('');
@@ -26,13 +26,13 @@ function PokemonQuiz() {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     loadPokemon();
   }, []);
 
-  function handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     if (!pokemon) {
@@ -51,12 +51,12 @@ function PokemonQuiz() {
     } else {
       setMessage('Not quite. Try again, or reveal the answer when you are ready.');
     }
-  }
+  };
 
-  function handleReveal() {
+  const handleReveal = () => {
     setIsRevealed(true);
     setMessage(`It's ${pokemon.name}!`);
-  }
+  };
 
   if (isLoading) {
     return (
@@ -100,7 +100,7 @@ function PokemonQuiz() {
             id="guess"
             type="text"
             value={guess}
-            onChange={(event) => setGuess(event.target.value)}
+            onChange={({ target }) => setGuess(target.value)}
             placeholder="Type a Pokemon name"
           />
           <button type="submit">Submit Guess</button>
@@ -121,6 +121,6 @@ function PokemonQuiz() {
       {isRevealed && <PokemonStats pokemon={pokemon} />}
     </section>
   );
-}
+};
 
 export default PokemonQuiz;

@@ -7,7 +7,7 @@ const statLabels = {
   speed: 'Speed'
 };
 
-function PokemonStats({ pokemon }) {
+const PokemonStats = ({ pokemon }) => {
   return (
     <section className="answer-panel" aria-label="Pokemon answer">
       <h2>{pokemon.name}</h2>
@@ -38,6 +38,6 @@ function PokemonStats({ pokemon }) {
       </ul>
     </section>
   );
-}
+};
 
 export default PokemonStats;
