@@ -8,6 +8,8 @@ const difficultyOptions = [
   { label: 'Hard', value: 'hard', limit: POKEMON_LIMITS.hard }
 ];
 
+const STARTING_LIVES = 3;
+
 const generationRanges = [
   { label: 'Generation I', maxId: 151 },
   { label: 'Generation II', maxId: 251 },
@@ -30,7 +32,9 @@ const PokemonQuiz = () => {
   const [message, setMessage] = useState('');
   const [difficulty, setDifficulty] = useState(difficultyOptions[2]);
   const [hintsUsed, setHintsUsed] = useState(0);
+  const [lives, setLives] = useState(STARTING_LIVES);
   const [isRevealed, setIsRevealed] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -42,13 +46,18 @@ const PokemonQuiz = () => {
       ]
     : [];
 
-  const loadPokemon = async (selectedDifficulty = difficulty) => {
+  const loadPokemon = async (selectedDifficulty = difficulty, shouldResetLives = false) => {
     setIsLoading(true);
     setError('');
     setGuess('');
     setMessage('');
     setHintsUsed(0);
     setIsRevealed(false);
+    setIsGameOver(false);
+
+    if (shouldResetLives) {
+      setLives(STARTING_LIVES);
+    }
 
     try {
       const nextPokemon = await getRandomPokemon(selectedDifficulty.limit);
@@ -67,13 +76,13 @@ const PokemonQuiz = () => {
 
   const handleDifficultyChange = (selectedDifficulty) => {
     setDifficulty(selectedDifficulty);
-    loadPokemon(selectedDifficulty);
+    loadPokemon(selectedDifficulty, true);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!pokemon) {
+    if (!pokemon || isRevealed || isGameOver) {
       return;
     }
 
@@ -89,7 +98,17 @@ const PokemonQuiz = () => {
       setHintsUsed(0);
       setIsRevealed(true);
     } else {
-      setMessage('Not quite. Try again, or reveal the answer when you are ready.');
+      const nextLives = lives - 1;
+      setLives(nextLives);
+
+      if (nextLives === 0) {
+        setIsGameOver(true);
+        setIsRevealed(true);
+        setHintsUsed(0);
+        setMessage(`Game over! It's ${pokemon.name}.`);
+      } else {
+        setMessage(`Not quite. You have ${nextLives} ${nextLives === 1 ? 'life' : 'lives'} left.`);
+      }
     }
   };
 
@@ -101,6 +120,10 @@ const PokemonQuiz = () => {
 
   const handleHint = () => {
     setHintsUsed((currentHintsUsed) => Math.min(currentHintsUsed + 1, hints.length));
+  };
+
+  const handleNewGame = () => {
+    loadPokemon(difficulty, true);
   };
 
   if (isLoading) {
@@ -116,7 +139,7 @@ const PokemonQuiz = () => {
       <section className="quiz-card">
         <h1>Who's That Pokémon?</h1>
         <p className="error-message">{error}</p>
-        <button type="button" onClick={loadPokemon}>
+        <button type="button" onClick={() => loadPokemon()}>
           Try Again
         </button>
       </section>
@@ -147,6 +170,11 @@ const PokemonQuiz = () => {
         </div>
       </div>
 
+      <div className="lives-panel" aria-label="Lives remaining">
+        <span>Lives</span>
+        <strong>{lives}</strong>
+      </div>
+
       <div className="image-frame">
         <img
           className={isRevealed ? 'pokemon-image' : 'pokemon-image silhouette'}
@@ -165,8 +193,11 @@ const PokemonQuiz = () => {
             value={guess}
             onChange={({ target }) => setGuess(target.value)}
             placeholder="Type a Pokemon name"
+            disabled={isRevealed || isGameOver}
           />
-          <button type="submit">Submit Guess</button>
+          <button type="submit" disabled={isRevealed || isGameOver}>
+            Submit Guess
+          </button>
         </div>
       </form>
 
@@ -177,17 +208,32 @@ const PokemonQuiz = () => {
           type="button"
           className="hint-button"
           onClick={handleHint}
-          disabled={isRevealed || hintsUsed === hints.length}
+          disabled={isRevealed || isGameOver || hintsUsed === hints.length}
         >
           Hint
         </button>
-        <button type="button" className="secondary-button" onClick={handleReveal}>
+        <button
+          type="button"
+          className="secondary-button"
+          onClick={handleReveal}
+          disabled={isRevealed || isGameOver}
+        >
           Reveal Answer
         </button>
-        <button type="button" onClick={loadPokemon}>
+        <button type="button" onClick={() => loadPokemon()} disabled={isGameOver}>
           Next Pokemon
         </button>
+        <button type="button" className="new-game-button" onClick={handleNewGame}>
+          New Game
+        </button>
       </div>
+
+      {isGameOver && (
+        <section className="game-over-panel" aria-label="Game over">
+          <h2>Game Over</h2>
+          <p>You ran out of lives. Start a new game to try again.</p>
+        </section>
+      )}
 
       {!isRevealed && hintsUsed > 0 && (
         <section className="hint-panel" aria-label="Hints">

@@ -37,6 +37,10 @@ The application:
   - Pokémon type
   - Generation
 - Correct guesses reveal the Pokémon immediately
+- Lives system:
+  - 3 lives per game
+  - Wrong guesses remove 1 life
+  - Game Over screen at 0 lives
 - Reveal answer functionality
 - Next Pokémon functionality
 
@@ -237,6 +241,20 @@ Hints are hidden once the Pokémon has been revealed.
 
 ---
 
+### 6. Manage Lives
+
+The player starts each game with 3 lives. Each incorrect guess removes 1 life.
+
+When the player reaches 0 lives:
+
+- The Pokémon is revealed
+- The Game Over screen is shown
+- Guessing, hints, and manual reveal are disabled
+
+The player can start over with **New Game**.
+
+---
+
 ## Future Improvements
 
 Potential features to build next:
@@ -248,13 +266,6 @@ Track:
 - Correct answers
 - Incorrect answers
 - Accuracy percentage
-
-### Lives System
-
-Give players:
-
-- 3 lives
-- Game Over screen
 
 ### Timer Mode
 

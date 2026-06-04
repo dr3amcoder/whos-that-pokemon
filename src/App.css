@@ -135,6 +135,23 @@ h3 {
   color: #1d2733;
 }
 
+.lives-panel {
+  align-items: center;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  display: flex;
+  font-weight: 800;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+}
+
+.lives-panel strong {
+  font-size: 1.5rem;
+}
+
 .image-frame {
   align-items: center;
   background: #f7fafc;
@@ -237,6 +254,34 @@ input {
 
 .hint-button:hover {
   background: #d97706;
+}
+
+.new-game-button {
+  background: #16a34a;
+}
+
+.new-game-button:hover {
+  background: #15803d;
+}
+
+.game-over-panel {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.game-over-panel h2 {
+  color: #991b1b;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.game-over-panel p {
+  color: #7f1d1d;
+  font-weight: 700;
+  margin-bottom: 0;
 }
 
 .hint-panel {
