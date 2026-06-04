@@ -267,6 +267,16 @@ Allow players to choose:
 - Generation III
 - etc.
 
+### Modern Pokémon-Inspired UI
+
+Improve the visual design so the app feels more like a modern Pokémon experience:
+
+- Pokémon-inspired theme colours
+- Type-based colour accents
+- More polished buttons and cards
+- Improved spacing, typography, and layout
+- Better visual treatment for stats and difficulty levels
+
 ---
 
 ## Learning Goals
