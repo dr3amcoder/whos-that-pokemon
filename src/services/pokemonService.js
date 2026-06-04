@@ -1,8 +1,13 @@
 const API_URL = 'https://pokeapi.co/api/v2/pokemon';
-const NATIONAL_POKEDEX_LIMIT = 1025;
 
-export const getRandomPokemon = async () => {
-  const randomId = Math.floor(Math.random() * NATIONAL_POKEDEX_LIMIT) + 1;
+export const POKEMON_LIMITS = {
+  easy: 151,
+  medium: 500,
+  hard: 1025
+};
+
+export const getRandomPokemon = async (maxPokemonId = POKEMON_LIMITS.hard) => {
+  const randomId = Math.floor(Math.random() * maxPokemonId) + 1;
   const response = await fetch(`${API_URL}/${randomId}`);
 
   if (!response.ok) {

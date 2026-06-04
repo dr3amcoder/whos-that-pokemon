@@ -24,6 +24,10 @@ The application:
 ### Quiz Gameplay
 
 - Random main-series Pokémon generation
+- Difficulty levels:
+  - Easy: first 151 Pokémon
+  - Medium: first 500 Pokémon
+  - Hard: first 1025 Pokémon
 - Silhouette image display
 - User guess input
 - Case-insensitive answer checking
@@ -138,7 +142,13 @@ http://localhost:5173
 
 ### 1. Fetch a Random Pokémon
 
-A random Pokémon ID from 1 to 1025 is generated and sent to the PokéAPI:
+A random Pokémon ID is generated based on the selected difficulty level:
+
+- Easy: 1 to 151
+- Medium: 1 to 500
+- Hard: 1 to 1025
+
+The selected ID is sent to the PokéAPI:
 
 ```javascript
 https://pokeapi.co/api/v2/pokemon/{id}
@@ -212,20 +222,6 @@ When the player clicks **Reveal Answer**, the application displays:
 ## Future Improvements
 
 Potential features to build next:
-
-### Difficulty Levels
-
-Easy:
-
-- First-generation Pokémon only
-
-Medium:
-
-- First 500 Pokémon
-
-Hard:
-
-- Current main-series Pokédex
 
 ### Scoring System
 

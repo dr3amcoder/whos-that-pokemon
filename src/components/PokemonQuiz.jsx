@@ -1,16 +1,23 @@
 import { useEffect, useState } from 'react';
-import { getRandomPokemon } from '../services/pokemonService.js';
+import { getRandomPokemon, POKEMON_LIMITS } from '../services/pokemonService.js';
 import PokemonStats from './PokemonStats.jsx';
+
+const difficultyOptions = [
+  { label: 'Easy', value: 'easy', limit: POKEMON_LIMITS.easy },
+  { label: 'Medium', value: 'medium', limit: POKEMON_LIMITS.medium },
+  { label: 'Hard', value: 'hard', limit: POKEMON_LIMITS.hard }
+];
 
 const PokemonQuiz = () => {
   const [pokemon, setPokemon] = useState(null);
   const [guess, setGuess] = useState('');
   const [message, setMessage] = useState('');
+  const [difficulty, setDifficulty] = useState(difficultyOptions[2]);
   const [isRevealed, setIsRevealed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const loadPokemon = async () => {
+  const loadPokemon = async (selectedDifficulty = difficulty) => {
     setIsLoading(true);
     setError('');
     setGuess('');
@@ -18,7 +25,7 @@ const PokemonQuiz = () => {
     setIsRevealed(false);
 
     try {
-      const nextPokemon = await getRandomPokemon();
+      const nextPokemon = await getRandomPokemon(selectedDifficulty.limit);
       setPokemon(nextPokemon);
     } catch (err) {
       setError(err.message);
@@ -31,6 +38,11 @@ const PokemonQuiz = () => {
   useEffect(() => {
     loadPokemon();
   }, []);
+
+  const handleDifficultyChange = (selectedDifficulty) => {
+    setDifficulty(selectedDifficulty);
+    loadPokemon(selectedDifficulty);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -84,6 +96,23 @@ const PokemonQuiz = () => {
         <p className="eyebrow">PokéAPI Quiz</p>
         <h1>Who's That Pokémon?</h1>
       </header>
+
+      <div className="difficulty-panel" aria-label="Difficulty level">
+        <span>Difficulty</span>
+        <div className="difficulty-options">
+          {difficultyOptions.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              className={difficulty.value === option.value ? 'active' : ''}
+              aria-pressed={difficulty.value === option.value}
+              onClick={() => handleDifficultyChange(option)}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="image-frame">
         <img

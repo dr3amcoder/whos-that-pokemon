@@ -88,6 +88,43 @@ h3 {
   margin: 1.25rem 0 0.75rem;
 }
 
+.difficulty-panel {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.difficulty-panel span {
+  color: #52606d;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.difficulty-options {
+  background: #e4edf5;
+  border-radius: 8px;
+  display: grid;
+  gap: 0.25rem;
+  grid-template-columns: repeat(3, minmax(84px, 1fr));
+  padding: 0.25rem;
+}
+
+.difficulty-options button {
+  background: transparent;
+  color: #334155;
+  min-height: 40px;
+  padding: 0.55rem 0.75rem;
+}
+
+.difficulty-options button:hover,
+.difficulty-options button.active {
+  background: #ffffff;
+  color: #1d2733;
+}
+
 .image-frame {
   align-items: center;
   background: #f7fafc;
@@ -219,11 +256,17 @@ input {
   }
 
   .guess-row,
+  .difficulty-options,
   .details-grid {
     grid-template-columns: 1fr;
   }
 
+  .difficulty-panel {
+    align-items: stretch;
+  }
+
   .actions button,
+  .difficulty-options button,
   .guess-row button {
     width: 100%;
   }
