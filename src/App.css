@@ -152,6 +152,34 @@ h3 {
   font-size: 1.5rem;
 }
 
+.score-panel {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 1rem;
+}
+
+.score-panel div {
+  background: #f7fafc;
+  border: 1px solid #e4edf5;
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.score-panel span {
+  color: #52606d;
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
+}
+
+.score-panel strong {
+  color: #1d2733;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
 .image-frame {
   align-items: center;
   background: #f7fafc;
@@ -264,6 +292,14 @@ input {
   background: #15803d;
 }
 
+.reset-score-button {
+  background: #0f766e;
+}
+
+.reset-score-button:hover {
+  background: #115e59;
+}
+
 .game-over-panel {
   background: #fef2f2;
   border: 1px solid #fecaca;
@@ -359,6 +395,7 @@ input {
 
   .guess-row,
   .difficulty-options,
+  .score-panel,
   .details-grid {
     grid-template-columns: 1fr;
   }

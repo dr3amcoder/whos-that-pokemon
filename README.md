@@ -41,6 +41,11 @@ The application:
   - 3 lives per game
   - Wrong guesses remove 1 life
   - Game Over screen at 0 lives
+- Scoring system:
+  - Correct guesses
+  - Wrong guesses
+  - Skipped reveals
+  - Accuracy percentage
 - Reveal answer functionality
 - Next Pokémon functionality
 
@@ -255,17 +260,24 @@ The player can start over with **New Game**.
 
 ---
 
+### 7. Track Score
+
+The score panel tracks:
+
+- Correct guesses
+- Wrong guesses
+- Skipped reveals
+- Accuracy percentage
+
+Accuracy is calculated from correct and wrong guesses. Skipped reveals are tracked separately and do not reduce accuracy.
+
+The player can clear the scoreboard with **Reset Score**.
+
+---
+
 ## Future Improvements
 
 Potential features to build next:
-
-### Scoring System
-
-Track:
-
-- Correct answers
-- Incorrect answers
-- Accuracy percentage
 
 ### Timer Mode
 

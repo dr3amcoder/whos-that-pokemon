@@ -9,6 +9,11 @@ const difficultyOptions = [
 ];
 
 const STARTING_LIVES = 3;
+const STARTING_SCORE = {
+  correct: 0,
+  incorrect: 0,
+  skipped: 0
+};
 
 const generationRanges = [
   { label: 'Generation I', maxId: 151 },
@@ -33,6 +38,7 @@ const PokemonQuiz = () => {
   const [difficulty, setDifficulty] = useState(difficultyOptions[2]);
   const [hintsUsed, setHintsUsed] = useState(0);
   const [lives, setLives] = useState(STARTING_LIVES);
+  const [score, setScore] = useState(STARTING_SCORE);
   const [isRevealed, setIsRevealed] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,6 +51,9 @@ const PokemonQuiz = () => {
         `Generation: ${getGeneration(pokemon.id)}`
       ]
     : [];
+  const totalScoredGuesses = score.correct + score.incorrect;
+  const accuracy =
+    totalScoredGuesses === 0 ? 0 : Math.round((score.correct / totalScoredGuesses) * 100);
 
   const loadPokemon = async (selectedDifficulty = difficulty, shouldResetLives = false) => {
     setIsLoading(true);
@@ -97,9 +106,17 @@ const PokemonQuiz = () => {
       setMessage('Correct! Great guess.');
       setHintsUsed(0);
       setIsRevealed(true);
+      setScore((currentScore) => ({
+        ...currentScore,
+        correct: currentScore.correct + 1
+      }));
     } else {
       const nextLives = lives - 1;
       setLives(nextLives);
+      setScore((currentScore) => ({
+        ...currentScore,
+        incorrect: currentScore.incorrect + 1
+      }));
 
       if (nextLives === 0) {
         setIsGameOver(true);
@@ -116,6 +133,10 @@ const PokemonQuiz = () => {
     setIsRevealed(true);
     setHintsUsed(0);
     setMessage(`It's ${pokemon.name}!`);
+    setScore((currentScore) => ({
+      ...currentScore,
+      skipped: currentScore.skipped + 1
+    }));
   };
 
   const handleHint = () => {
@@ -124,6 +145,10 @@ const PokemonQuiz = () => {
 
   const handleNewGame = () => {
     loadPokemon(difficulty, true);
+  };
+
+  const handleResetScore = () => {
+    setScore(STARTING_SCORE);
   };
 
   if (isLoading) {
@@ -175,6 +200,25 @@ const PokemonQuiz = () => {
         <strong>{lives}</strong>
       </div>
 
+      <section className="score-panel" aria-label="Score">
+        <div>
+          <span>Correct</span>
+          <strong>{score.correct}</strong>
+        </div>
+        <div>
+          <span>Wrong</span>
+          <strong>{score.incorrect}</strong>
+        </div>
+        <div>
+          <span>Skipped</span>
+          <strong>{score.skipped}</strong>
+        </div>
+        <div>
+          <span>Accuracy</span>
+          <strong>{accuracy}%</strong>
+        </div>
+      </section>
+
       <div className="image-frame">
         <img
           className={isRevealed ? 'pokemon-image' : 'pokemon-image silhouette'}
@@ -225,6 +269,9 @@ const PokemonQuiz = () => {
         </button>
         <button type="button" className="new-game-button" onClick={handleNewGame}>
           New Game
+        </button>
+        <button type="button" className="reset-score-button" onClick={handleResetScore}>
+          Reset Score
         </button>
       </div>
 
