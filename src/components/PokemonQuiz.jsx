@@ -8,20 +8,46 @@ const difficultyOptions = [
   { label: 'Hard', value: 'hard', limit: POKEMON_LIMITS.hard }
 ];
 
+const generationRanges = [
+  { label: 'Generation I', maxId: 151 },
+  { label: 'Generation II', maxId: 251 },
+  { label: 'Generation III', maxId: 386 },
+  { label: 'Generation IV', maxId: 493 },
+  { label: 'Generation V', maxId: 649 },
+  { label: 'Generation VI', maxId: 721 },
+  { label: 'Generation VII', maxId: 809 },
+  { label: 'Generation VIII', maxId: 905 },
+  { label: 'Generation IX', maxId: 1025 }
+];
+
+const getGeneration = (pokemonId) => {
+  return generationRanges.find((generation) => pokemonId <= generation.maxId)?.label;
+};
+
 const PokemonQuiz = () => {
   const [pokemon, setPokemon] = useState(null);
   const [guess, setGuess] = useState('');
   const [message, setMessage] = useState('');
   const [difficulty, setDifficulty] = useState(difficultyOptions[2]);
+  const [hintsUsed, setHintsUsed] = useState(0);
   const [isRevealed, setIsRevealed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+
+  const hints = pokemon
+    ? [
+        `Starts with "${pokemon.name.charAt(0).toUpperCase()}"`,
+        `Type: ${pokemon.types.join(', ')}`,
+        `Generation: ${getGeneration(pokemon.id)}`
+      ]
+    : [];
 
   const loadPokemon = async (selectedDifficulty = difficulty) => {
     setIsLoading(true);
     setError('');
     setGuess('');
     setMessage('');
+    setHintsUsed(0);
     setIsRevealed(false);
 
     try {
@@ -68,6 +94,10 @@ const PokemonQuiz = () => {
   const handleReveal = () => {
     setIsRevealed(true);
     setMessage(`It's ${pokemon.name}!`);
+  };
+
+  const handleHint = () => {
+    setHintsUsed((currentHintsUsed) => Math.min(currentHintsUsed + 1, hints.length));
   };
 
   if (isLoading) {
@@ -139,6 +169,14 @@ const PokemonQuiz = () => {
       {message && <p className="status-message">{message}</p>}
 
       <div className="actions">
+        <button
+          type="button"
+          className="hint-button"
+          onClick={handleHint}
+          disabled={isRevealed || hintsUsed === hints.length}
+        >
+          Hint
+        </button>
         <button type="button" className="secondary-button" onClick={handleReveal}>
           Reveal Answer
         </button>
@@ -146,6 +184,17 @@ const PokemonQuiz = () => {
           Next Pokemon
         </button>
       </div>
+
+      {hintsUsed > 0 && (
+        <section className="hint-panel" aria-label="Hints">
+          <h2>Hints</h2>
+          <ul>
+            {hints.slice(0, hintsUsed).map((hint) => (
+              <li key={hint}>{hint}</li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {isRevealed && <PokemonStats pokemon={pokemon} />}
     </section>

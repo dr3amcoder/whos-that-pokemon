@@ -33,6 +33,16 @@ button:hover {
   background: #1d4ed8;
 }
 
+button:disabled {
+  background: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background: #cbd5e1;
+}
+
 button:focus-visible,
 input:focus-visible {
   outline: 3px solid #facc15;
@@ -206,6 +216,41 @@ input {
 
 .secondary-button:hover {
   background: #334155;
+}
+
+.hint-button {
+  background: #f59e0b;
+  color: #1f2937;
+}
+
+.hint-button:hover {
+  background: #d97706;
+}
+
+.hint-panel {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.hint-panel h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.hint-panel ul {
+  display: grid;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hint-panel li {
+  color: #78350f;
+  font-weight: 700;
 }
 
 .answer-panel {

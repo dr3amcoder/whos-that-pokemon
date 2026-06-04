@@ -32,6 +32,10 @@ The application:
 - User guess input
 - Case-insensitive answer checking
 - Whitespace-tolerant answer checking
+- Progressive hint system:
+  - First letter
+  - Pokémon type
+  - Generation
 - Reveal answer functionality
 - Next Pokémon functionality
 
@@ -219,6 +223,18 @@ When the player clicks **Reveal Answer**, the application displays:
 
 ---
 
+### 5. Use Hints
+
+The player can reveal up to three hints before revealing the answer:
+
+- First letter
+- Pokémon type
+- Generation
+
+Hints reset when the player moves to the next Pokémon or changes difficulty.
+
+---
+
 ## Future Improvements
 
 Potential features to build next:
@@ -237,14 +253,6 @@ Give players:
 
 - 3 lives
 - Game Over screen
-
-### Hint System
-
-Reveal:
-
-- First letter
-- Pokémon type
-- Generation
 
 ### Timer Mode
 
