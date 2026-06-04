@@ -10,7 +10,7 @@ The player is shown a Pokémon silhouette and must guess its name before reveali
 
 The application:
 
-1. Loads a random Generation I Pokémon from PokéAPI.
+1. Loads a random main-series Pokémon from PokéAPI.
 2. Displays the Pokémon as a silhouette.
 3. Allows the user to enter a guess.
 4. Checks whether the guess is correct.
@@ -23,7 +23,7 @@ The application:
 
 ### Quiz Gameplay
 
-- Random Generation I Pokémon generation
+- Random main-series Pokémon generation
 - Silhouette image display
 - User guess input
 - Case-insensitive answer checking
@@ -138,7 +138,7 @@ http://localhost:5173
 
 ### 1. Fetch a Random Pokémon
 
-A random Pokémon ID from 1 to 151 is generated and sent to the PokéAPI:
+A random Pokémon ID from 1 to 1025 is generated and sent to the PokéAPI:
 
 ```javascript
 https://pokeapi.co/api/v2/pokemon/{id}
@@ -225,7 +225,7 @@ Medium:
 
 Hard:
 
-- Entire Pokédex
+- Current main-series Pokédex
 
 ### Scoring System
 
