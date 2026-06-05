@@ -70,6 +70,9 @@ The application:
 - Error handling for failed API requests
 - Responsive layout
 - Clean and simple interface
+- Pokémon-inspired theme colours
+- Type-based colour accents
+- Type badges and stat bars
 
 ---
 
@@ -299,16 +302,6 @@ Allow players to choose:
 - Generation II
 - Generation III
 - etc.
-
-### Modern Pokémon-Inspired UI
-
-Improve the visual design so the app feels more like a modern Pokémon experience:
-
-- Pokémon-inspired theme colours
-- Type-based colour accents
-- More polished buttons and cards
-- Improved spacing, typography, and layout
-- Better visual treatment for stats and difficulty levels
 
 ---
 

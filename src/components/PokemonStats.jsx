@@ -7,6 +7,8 @@ const statLabels = {
   speed: 'Speed'
 };
 
+const MAX_STAT_VALUE = 255;
+
 const PokemonStats = ({ pokemon }) => {
   return (
     <section className="answer-panel" aria-label="Pokemon answer">
@@ -15,7 +17,13 @@ const PokemonStats = ({ pokemon }) => {
       <div className="details-grid">
         <div>
           <span className="detail-label">Type</span>
-          <p>{pokemon.types.join(', ')}</p>
+          <div className="type-badges">
+            {pokemon.types.map((type) => (
+              <span key={type} className={`type-badge type-${type}`}>
+                {type}
+              </span>
+            ))}
+          </div>
         </div>
         <div>
           <span className="detail-label">Height</span>
@@ -31,8 +39,13 @@ const PokemonStats = ({ pokemon }) => {
       <ul className="stats-list">
         {pokemon.stats.map((stat) => (
           <li key={stat.name}>
-            <span>{statLabels[stat.name] || stat.name}</span>
-            <strong>{stat.value}</strong>
+            <div className="stat-header">
+              <span>{statLabels[stat.name] || stat.name}</span>
+              <strong>{stat.value}</strong>
+            </div>
+            <div className="stat-bar" aria-hidden="true">
+              <span style={{ width: `${Math.min((stat.value / MAX_STAT_VALUE) * 100, 100)}%` }} />
+            </div>
           </li>
         ))}
       </ul>

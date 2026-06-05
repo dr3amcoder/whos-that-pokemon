@@ -31,6 +31,10 @@ const getGeneration = (pokemonId) => {
   return generationRanges.find((generation) => pokemonId <= generation.maxId)?.label;
 };
 
+const getTypeClassName = (pokemon) => {
+  return pokemon ? `type-${pokemon.types[0]}` : '';
+};
+
 const PokemonQuiz = () => {
   const [pokemon, setPokemon] = useState(null);
   const [guess, setGuess] = useState('');
@@ -171,8 +175,10 @@ const PokemonQuiz = () => {
     );
   }
 
+  const typeClassName = getTypeClassName(pokemon);
+
   return (
-    <section className="quiz-card">
+    <section className={`quiz-card ${isRevealed ? typeClassName : ''}`}>
       <header>
         <p className="eyebrow">PokéAPI Quiz</p>
         <h1>Who's That Pokémon?</h1>
@@ -219,7 +225,7 @@ const PokemonQuiz = () => {
         </div>
       </section>
 
-      <div className="image-frame">
+      <div className={`image-frame ${isRevealed ? typeClassName : ''}`}>
         <img
           className={isRevealed ? 'pokemon-image' : 'pokemon-image silhouette'}
           src={pokemon.image}
