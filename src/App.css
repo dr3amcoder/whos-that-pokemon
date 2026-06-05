@@ -2,11 +2,26 @@
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: #1d2733;
   background: #f8fafc;
-  --accent-color: #2563eb;
-  --accent-soft: #dbeafe;
-  --pokemon-red: #ef4444;
-  --pokemon-blue: #2563eb;
-  --pokemon-yellow: #facc15;
+  --palette-blue: #2f6fde;
+  --palette-blue-dark: #244f9f;
+  --palette-yellow: #f6c945;
+  --palette-yellow-soft: #fff4c2;
+  --palette-red: #e85d5b;
+  --palette-red-dark: #c94543;
+  --palette-navy: #243b6b;
+  --palette-mist: #eaf2ff;
+  --palette-surface: #fbfdff;
+  --accent-color: var(--palette-blue);
+  --accent-hover: var(--palette-blue-dark);
+  --accent-soft: var(--palette-mist);
+  --card-border: #c9daf8;
+  --eyebrow-color: var(--palette-red);
+  --focus-color: var(--palette-yellow);
+  --page-background:
+    radial-gradient(circle at top left, rgba(246, 201, 69, 0.24), transparent 32rem),
+    linear-gradient(135deg, rgba(47, 111, 222, 0.12), rgba(232, 93, 91, 0.08)),
+    #f6f9ff;
+  --shadow-color: rgba(36, 59, 107, 0.14);
 }
 
 * {
@@ -26,7 +41,7 @@ input {
 button {
   border: 0;
   border-radius: 8px;
-  background: var(--pokemon-blue);
+  background: var(--accent-color);
   color: white;
   cursor: pointer;
   font-weight: 700;
@@ -35,7 +50,7 @@ button {
 }
 
 button:hover {
-  background: #1d4ed8;
+  background: var(--accent-hover);
 }
 
 button:disabled {
@@ -50,35 +65,31 @@ button:disabled:hover {
 
 button:focus-visible,
 input:focus-visible {
-  outline: 3px solid #facc15;
+  outline: 3px solid var(--focus-color);
   outline-offset: 2px;
 }
 
 .app {
+  background: var(--page-background);
   display: grid;
   min-height: 100vh;
   padding: 2rem 1rem;
   place-items: center;
-  background:
-    linear-gradient(180deg, rgba(239, 68, 68, 0.1), rgba(37, 99, 235, 0.08)),
-    #f8fafc;
 }
 
 .quiz-card {
-  background: #ffffff;
-  border: 1px solid #d9e2ec;
+  background: var(--palette-surface);
+  border: 1px solid var(--card-border);
   border-top: 8px solid var(--accent-color);
   border-radius: 8px;
-  box-shadow: 0 20px 45px rgba(31, 41, 55, 0.12);
+  box-shadow: 0 20px 45px var(--shadow-color);
   max-width: 620px;
   padding: 2rem;
   width: 100%;
-  --accent-color: var(--pokemon-blue);
-  --accent-soft: #dbeafe;
 }
 
 .eyebrow {
-  color: var(--pokemon-red);
+  color: var(--eyebrow-color);
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0;
@@ -94,10 +105,22 @@ p {
 }
 
 h1 {
+  color: var(--palette-navy);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: clamp(2rem, 8vw, 3.6rem);
+  font-weight: 950;
   line-height: 1;
-  margin-bottom: 1.5rem;
-  text-shadow: 0 4px 0 rgba(250, 204, 21, 0.35);
+  margin-bottom: 0.5rem;
+}
+
+h1::after {
+  background: linear-gradient(90deg, var(--palette-yellow), var(--palette-red), var(--palette-blue));
+  border-radius: 999px;
+  content: "";
+  display: block;
+  height: 0.35rem;
+  margin-top: 0.7rem;
+  width: min(13rem, 62%);
 }
 
 h2 {
@@ -121,7 +144,7 @@ h3 {
 
 .difficulty-panel span {
   background: var(--accent-soft);
-  border: 1px solid rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(47, 111, 222, 0.16);
   border-radius: 999px;
   color: var(--accent-color);
   font-size: 0.78rem;
@@ -131,7 +154,7 @@ h3 {
 }
 
 .difficulty-options {
-  background: #e4edf5;
+  background: #dfeaff;
   border-radius: 8px;
   display: grid;
   gap: 0.25rem;
@@ -154,10 +177,10 @@ h3 {
 
 .lives-panel {
   align-items: center;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: var(--palette-yellow-soft);
+  border: 1px solid #f4dd7a;
   border-radius: 8px;
-  color: #991b1b;
+  color: var(--palette-navy);
   display: flex;
   font-weight: 800;
   justify-content: space-between;
@@ -172,7 +195,7 @@ h3 {
 .lives-panel span {
   background: #ffffff;
   border-radius: 999px;
-  color: #991b1b;
+  color: var(--palette-navy);
   font-size: 0.78rem;
   font-weight: 900;
   padding: 0.35rem 0.65rem;
@@ -188,7 +211,7 @@ h3 {
 
 .score-panel div {
   background: #ffffff;
-  border: 1px solid #e4edf5;
+  border: 1px solid #dbe7fb;
   border-radius: 8px;
   padding: 0.75rem;
 }
@@ -216,8 +239,8 @@ h3 {
   align-items: center;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.96)),
-    var(--accent-soft);
-  border: 2px solid var(--accent-soft);
+    #dce9ff;
+  border: 2px solid #dce9ff;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -226,6 +249,13 @@ h3 {
   min-height: 260px;
   overflow: hidden;
   padding: 1rem;
+}
+
+.image-frame[class*="type-"] {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.96)),
+    var(--type-soft, var(--accent-soft));
+  border-color: var(--type-soft, var(--accent-soft));
 }
 
 .pokemon-image {
@@ -241,7 +271,7 @@ h3 {
 }
 
 .revealed-name {
-  color: var(--accent-color);
+  color: var(--type-color, var(--accent-color));
   font-size: 1.6rem;
   font-weight: 900;
   line-height: 1.1;
@@ -289,8 +319,8 @@ input {
 }
 
 .status-message {
-  background: var(--accent-soft);
-  color: #1d2733;
+  background: var(--palette-yellow-soft);
+  color: var(--palette-navy);
 }
 
 .error-message {
@@ -315,61 +345,61 @@ input {
 }
 
 .secondary-button {
-  background: #475569;
+  background: var(--palette-red);
 }
 
 .secondary-button:hover {
-  background: #334155;
+  background: var(--palette-red-dark);
 }
 
 .hint-button {
-  background: #f59e0b;
-  color: #1f2937;
+  background: var(--palette-yellow);
+  color: #1d2733;
 }
 
 .hint-button:hover {
-  background: #d97706;
+  background: #e7b930;
 }
 
 .new-game-button {
-  background: #16a34a;
+  background: var(--palette-blue-dark);
 }
 
 .new-game-button:hover {
-  background: #15803d;
+  background: #1f4386;
 }
 
 .reset-score-button {
-  background: #0f766e;
+  background: var(--palette-navy);
 }
 
 .reset-score-button:hover {
-  background: #115e59;
+  background: #1b2c50;
 }
 
 .game-over-panel {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
   border-radius: 8px;
   margin-top: 1rem;
   padding: 1rem;
 }
 
 .game-over-panel h2 {
-  color: #991b1b;
+  color: #9a3412;
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
 }
 
 .game-over-panel p {
-  color: #7f1d1d;
+  color: #7c2d12;
   font-weight: 700;
   margin-bottom: 0;
 }
 
 .hint-panel {
-  background: #fffbeb;
-  border: 1px solid #fde68a;
+  background: #fff9dc;
+  border: 1px solid #f4dd7a;
   border-radius: 8px;
   margin-top: 1rem;
   padding: 1rem;
@@ -389,7 +419,7 @@ input {
 }
 
 .hint-panel li {
-  color: #78350f;
+  color: var(--palette-navy);
   font-weight: 700;
 }
 
@@ -426,8 +456,8 @@ input {
 }
 
 .details-grid div {
-  background: #f7fafc;
-  border: 1px solid #e4edf5;
+  background: #f8fbff;
+  border: 1px solid #dbe7fb;
   border-radius: 8px;
   padding: 0.9rem;
 }
@@ -445,7 +475,7 @@ input {
 
 .type-badge {
   border-radius: 999px;
-  background-color: var(--accent-color);
+  background-color: var(--type-color, var(--accent-color));
   color: #ffffff;
   display: inline-flex;
   font-size: 0.8rem;
@@ -463,8 +493,8 @@ input {
 }
 
 .stats-list li {
-  background: #f7fafc;
-  border: 1px solid #e4edf5;
+  background: #f8fbff;
+  border: 1px solid #dbe7fb;
   border-radius: 8px;
   display: grid;
   gap: 0.55rem;
@@ -503,93 +533,93 @@ input {
 }
 
 .type-normal {
-  --accent-color: #64748b;
-  --accent-soft: #e2e8f0;
+  --type-color: #64748b;
+  --type-soft: #e2e8f0;
 }
 
 .type-fire {
-  --accent-color: #ef4444;
-  --accent-soft: #fee2e2;
+  --type-color: #ef4444;
+  --type-soft: #fee2e2;
 }
 
 .type-water {
-  --accent-color: #2563eb;
-  --accent-soft: #dbeafe;
+  --type-color: #2563eb;
+  --type-soft: #dbeafe;
 }
 
 .type-electric {
-  --accent-color: #ca8a04;
-  --accent-soft: #fef3c7;
+  --type-color: #ca8a04;
+  --type-soft: #fef3c7;
 }
 
 .type-grass {
-  --accent-color: #16a34a;
-  --accent-soft: #dcfce7;
+  --type-color: #16a34a;
+  --type-soft: #dcfce7;
 }
 
 .type-ice {
-  --accent-color: #0891b2;
-  --accent-soft: #cffafe;
+  --type-color: #0891b2;
+  --type-soft: #cffafe;
 }
 
 .type-fighting {
-  --accent-color: #b91c1c;
-  --accent-soft: #fee2e2;
+  --type-color: #b91c1c;
+  --type-soft: #fee2e2;
 }
 
 .type-poison {
-  --accent-color: #9333ea;
-  --accent-soft: #f3e8ff;
+  --type-color: #9333ea;
+  --type-soft: #f3e8ff;
 }
 
 .type-ground {
-  --accent-color: #a16207;
-  --accent-soft: #fef3c7;
+  --type-color: #a16207;
+  --type-soft: #fef3c7;
 }
 
 .type-flying {
-  --accent-color: #4f46e5;
-  --accent-soft: #e0e7ff;
+  --type-color: #4f46e5;
+  --type-soft: #e0e7ff;
 }
 
 .type-psychic {
-  --accent-color: #db2777;
-  --accent-soft: #fce7f3;
+  --type-color: #db2777;
+  --type-soft: #fce7f3;
 }
 
 .type-bug {
-  --accent-color: #65a30d;
-  --accent-soft: #ecfccb;
+  --type-color: #65a30d;
+  --type-soft: #ecfccb;
 }
 
 .type-rock {
-  --accent-color: #854d0e;
-  --accent-soft: #fef3c7;
+  --type-color: #854d0e;
+  --type-soft: #fef3c7;
 }
 
 .type-ghost {
-  --accent-color: #6d28d9;
-  --accent-soft: #ede9fe;
+  --type-color: #6d28d9;
+  --type-soft: #ede9fe;
 }
 
 .type-dragon {
-  --accent-color: #7c3aed;
-  --accent-soft: #ede9fe;
+  --type-color: #7c3aed;
+  --type-soft: #ede9fe;
 }
 
 .type-dark {
-  --accent-color: #334155;
-  --accent-soft: #e2e8f0;
+  --type-color: #334155;
+  --type-soft: #e2e8f0;
 }
 
 .type-steel {
-  --accent-color: #475569;
-  --accent-soft: #e2e8f0;
+  --type-color: #475569;
+  --type-soft: #e2e8f0;
 }
 
 .type-fairy {
-  --accent-color: #e11d48;
-  --accent-soft: #ffe4e6;
+  --type-color: #e11d48;
+  --type-soft: #ffe4e6;
 }
 
 @media (max-width: 760px) {
