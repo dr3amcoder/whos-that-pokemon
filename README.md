@@ -84,6 +84,7 @@ The application:
 - JavaScript (ES6+)
 - CSS
 - Vite
+- Vitest
 
 ### API
 
@@ -106,7 +107,8 @@ src/
 │   └── PokemonStats.jsx
 │
 ├── services/
-│   └── pokemonService.js
+│   ├── pokemonService.js
+│   └── pokemonService.test.js
 │
 ├── App.jsx
 ├── App.css
@@ -151,6 +153,12 @@ The application will be available at:
 
 ```text
 http://localhost:5173
+```
+
+### Run tests
+
+```bash
+npm test
 ```
 
 ---
@@ -275,6 +283,40 @@ The score panel tracks:
 Accuracy is calculated from correct and wrong guesses. Skipped reveals are tracked separately and do not reduce accuracy.
 
 The player can clear the scoreboard with **Reset Score**.
+
+---
+
+## Styling
+
+The interface uses a modern Pokémon-inspired colour palette:
+
+- Bright blue for primary actions and section accents
+- Warm yellow for hints, lives, and friendly feedback
+- Controlled red for reveal actions and important moments
+- Deep navy for readable text and contrast
+- Soft mist backgrounds to keep the app easy on the eyes
+
+The Pokémon type colours are used only for type badges and the revealed Pokémon accent, so the overall interface stays consistent while still feeling connected to each Pokémon.
+
+---
+
+## Testing
+
+The project includes simple Vitest tests for the PokéAPI service.
+
+Current tests check that:
+
+- Difficulty limits are defined correctly
+- A random Pokémon request is made with the expected ID
+- API data is transformed into the shape used by the app
+- A fallback sprite is used when official artwork is unavailable
+- Failed API requests throw a friendly error message
+
+Run the tests with:
+
+```bash
+npm test
+```
 
 ---
 
