@@ -120,9 +120,14 @@ h3 {
 }
 
 .difficulty-panel span {
-  color: #52606d;
-  font-size: 0.9rem;
-  font-weight: 800;
+  background: var(--accent-soft);
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  border-radius: 999px;
+  color: var(--accent-color);
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 0.35rem 0.65rem;
+  text-transform: uppercase;
 }
 
 .difficulty-options {
@@ -164,6 +169,16 @@ h3 {
   font-size: 1.5rem;
 }
 
+.lives-panel span {
+  background: #ffffff;
+  border-radius: 999px;
+  color: #991b1b;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 0.35rem 0.65rem;
+  text-transform: uppercase;
+}
+
 .score-panel {
   display: grid;
   gap: 0.75rem;
@@ -179,11 +194,16 @@ h3 {
 }
 
 .score-panel span {
-  color: #52606d;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  color: var(--accent-color);
   display: block;
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 900;
   margin-bottom: 0.35rem;
+  padding: 0.28rem 0.5rem;
+  text-transform: uppercase;
+  width: fit-content;
 }
 
 .score-panel strong {
@@ -235,11 +255,15 @@ h3 {
 
 .guess-form label,
 .detail-label {
-  color: #52606d;
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 700;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  color: var(--accent-color);
+  display: inline-flex;
+  font-size: 0.78rem;
+  font-weight: 900;
   margin-bottom: 0.4rem;
+  padding: 0.32rem 0.6rem;
+  text-transform: uppercase;
 }
 
 .guess-row {
@@ -375,6 +399,26 @@ input {
   padding-top: 1.5rem;
 }
 
+.answer-panel h3 {
+  align-items: center;
+  color: var(--accent-color);
+  display: flex;
+  font-size: 1rem;
+  font-weight: 900;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0.75rem;
+  text-transform: uppercase;
+}
+
+.answer-panel h3::before {
+  background: var(--accent-color);
+  border-radius: 999px;
+  content: "";
+  display: inline-block;
+  height: 0.55rem;
+  width: 0.55rem;
+}
+
 .details-grid {
   display: grid;
   gap: 0.75rem;
@@ -431,6 +475,17 @@ input {
   align-items: center;
   display: flex;
   justify-content: space-between;
+}
+
+.stat-header span {
+  background: #ffffff;
+  border: 1px solid #e4edf5;
+  border-radius: 999px;
+  color: #334155;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 0.28rem 0.55rem;
+  text-transform: uppercase;
 }
 
 .stat-bar {
