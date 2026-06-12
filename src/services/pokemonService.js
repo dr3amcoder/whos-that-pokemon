@@ -6,16 +6,11 @@ export const POKEMON_LIMITS = {
   hard: 1025
 };
 
-export const getRandomPokemon = async (maxPokemonId = POKEMON_LIMITS.hard) => {
-  const randomId = Math.floor(Math.random() * maxPokemonId) + 1;
-  const response = await fetch(`${API_URL}/${randomId}`);
+const getRandomPokemonId = (maxPokemonId) => {
+  return Math.floor(Math.random() * maxPokemonId) + 1;
+};
 
-  if (!response.ok) {
-    throw new Error('Could not fetch a Pokemon. Please try again.');
-  }
-
-  const data = await response.json();
-
+const formatPokemon = (data) => {
   return {
     id: data.id,
     name: data.name,
@@ -30,4 +25,55 @@ export const getRandomPokemon = async (maxPokemonId = POKEMON_LIMITS.hard) => {
       value: item.base_stat
     }))
   };
+};
+
+const fetchPokemonById = async (pokemonId) => {
+  const response = await fetch(`${API_URL}/${pokemonId}`);
+
+  if (!response.ok) {
+    throw new Error('Could not fetch a Pokemon. Please try again.');
+  }
+
+  return response.json();
+};
+
+const shuffleChoices = (choices) => {
+  const shuffledChoices = [...choices];
+
+  for (let index = shuffledChoices.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffledChoices[index], shuffledChoices[randomIndex]] = [
+      shuffledChoices[randomIndex],
+      shuffledChoices[index]
+    ];
+  }
+
+  return shuffledChoices;
+};
+
+export const getRandomPokemon = async (maxPokemonId = POKEMON_LIMITS.hard) => {
+  const randomId = getRandomPokemonId(maxPokemonId);
+  const data = await fetchPokemonById(randomId);
+
+  return formatPokemon(data);
+};
+
+export const getPokemonChoices = async (
+  correctPokemon,
+  maxPokemonId = POKEMON_LIMITS.hard,
+  totalChoices = 4
+) => {
+  const choiceCount = Math.min(totalChoices, maxPokemonId);
+  const choices = new Set([correctPokemon.name]);
+
+  while (choices.size < choiceCount) {
+    const randomId = getRandomPokemonId(maxPokemonId);
+
+    if (randomId !== correctPokemon.id) {
+      const pokemon = await fetchPokemonById(randomId);
+      choices.add(pokemon.name);
+    }
+  }
+
+  return shuffleChoices([...choices]);
 };

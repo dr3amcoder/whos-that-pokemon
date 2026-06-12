@@ -175,6 +175,13 @@ h3 {
   color: var(--accent-color);
 }
 
+.mode-description {
+  color: var(--palette-navy);
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
 .lives-panel {
   align-items: center;
   background: var(--palette-yellow-soft);
@@ -284,6 +291,7 @@ h3 {
 }
 
 .guess-form label,
+.choices-panel > span,
 .detail-label {
   background: var(--accent-soft);
   border-radius: 999px;
@@ -300,6 +308,41 @@ h3 {
   display: grid;
   gap: 0.75rem;
   grid-template-columns: 1fr auto;
+}
+
+.choices-panel {
+  margin-top: 1rem;
+}
+
+.choice-options {
+  background: #ffffff;
+  border: 1px solid #dbe7fb;
+  border-radius: 8px;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0.75rem;
+}
+
+.choice-options button {
+  background: var(--palette-yellow-soft);
+  border: 2px solid #dbe7fb;
+  color: var(--palette-navy);
+  min-height: 52px;
+  text-transform: capitalize;
+}
+
+.choice-options button:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.choice-options button.wrong-choice,
+.choice-options button.wrong-choice:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #64748b;
 }
 
 input {
@@ -331,7 +374,7 @@ input {
 .actions {
   display: grid;
   gap: 0.75rem;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   margin-top: 1rem;
 }
 
@@ -635,6 +678,7 @@ input {
 
   .guess-row,
   .difficulty-options,
+  .choice-options,
   .score-panel,
   .details-grid {
     grid-template-columns: 1fr;

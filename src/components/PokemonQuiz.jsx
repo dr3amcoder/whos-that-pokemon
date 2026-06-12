@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getRandomPokemon, POKEMON_LIMITS } from '../services/pokemonService.js';
+import { getPokemonChoices, getRandomPokemon, POKEMON_LIMITS } from '../services/pokemonService.js';
 import PokemonStats from './PokemonStats.jsx';
 
 const difficultyOptions = [
@@ -7,6 +7,12 @@ const difficultyOptions = [
   { label: 'Medium', value: 'medium', limit: POKEMON_LIMITS.medium },
   { label: 'Hard', value: 'hard', limit: POKEMON_LIMITS.hard }
 ];
+
+const modeDescriptions = {
+  easy: 'Multiple choice only',
+  medium: 'Type your guess with hints',
+  hard: 'Type your guess with no help'
+};
 
 const STARTING_LIVES = 3;
 const STARTING_SCORE = {
@@ -37,6 +43,8 @@ const getTypeClassName = (pokemon) => {
 
 const PokemonQuiz = () => {
   const [pokemon, setPokemon] = useState(null);
+  const [answerChoices, setAnswerChoices] = useState([]);
+  const [wrongChoices, setWrongChoices] = useState([]);
   const [guess, setGuess] = useState('');
   const [message, setMessage] = useState('');
   const [difficulty, setDifficulty] = useState(difficultyOptions[2]);
@@ -58,11 +66,16 @@ const PokemonQuiz = () => {
   const totalScoredGuesses = score.correct + score.incorrect;
   const accuracy =
     totalScoredGuesses === 0 ? 0 : Math.round((score.correct / totalScoredGuesses) * 100);
+  const isEasyMode = difficulty.value === 'easy';
+  const isMediumMode = difficulty.value === 'medium';
+  const isHardMode = difficulty.value === 'hard';
 
   const loadPokemon = async (selectedDifficulty = difficulty, shouldResetLives = false) => {
     setIsLoading(true);
     setError('');
     setGuess('');
+    setAnswerChoices([]);
+    setWrongChoices([]);
     setMessage('');
     setHintsUsed(0);
     setIsRevealed(false);
@@ -74,10 +87,16 @@ const PokemonQuiz = () => {
 
     try {
       const nextPokemon = await getRandomPokemon(selectedDifficulty.limit);
+      const nextChoices =
+        selectedDifficulty.value === 'easy'
+          ? await getPokemonChoices(nextPokemon, selectedDifficulty.limit)
+          : [];
       setPokemon(nextPokemon);
+      setAnswerChoices(nextChoices);
     } catch (err) {
       setError(err.message);
       setPokemon(null);
+      setAnswerChoices([]);
     } finally {
       setIsLoading(false);
     }
@@ -92,14 +111,12 @@ const PokemonQuiz = () => {
     loadPokemon(selectedDifficulty, true);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const checkAnswer = (answer) => {
     if (!pokemon || isRevealed || isGameOver) {
       return;
     }
 
-    const cleanGuess = guess.trim().toLowerCase();
+    const cleanGuess = answer.trim().toLowerCase();
 
     if (!cleanGuess) {
       setMessage('Type a Pokemon name before submitting your guess.');
@@ -115,8 +132,14 @@ const PokemonQuiz = () => {
         correct: currentScore.correct + 1
       }));
     } else {
+      if (wrongChoices.includes(cleanGuess)) {
+        setMessage('You already tried that answer. Try a different one.');
+        return;
+      }
+
       const nextLives = lives - 1;
       setLives(nextLives);
+      setWrongChoices((currentWrongChoices) => [...currentWrongChoices, cleanGuess]);
       setScore((currentScore) => ({
         ...currentScore,
         incorrect: currentScore.incorrect + 1
@@ -133,18 +156,29 @@ const PokemonQuiz = () => {
     }
   };
 
-  const handleReveal = () => {
-    setIsRevealed(true);
-    setHintsUsed(0);
-    setMessage(`It's ${pokemon.name}!`);
-    setScore((currentScore) => ({
-      ...currentScore,
-      skipped: currentScore.skipped + 1
-    }));
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    checkAnswer(guess);
+  };
+
+  const handleChoiceClick = (choice) => {
+    setGuess(choice);
+    checkAnswer(choice);
   };
 
   const handleHint = () => {
     setHintsUsed((currentHintsUsed) => Math.min(currentHintsUsed + 1, hints.length));
+  };
+
+  const handleNextPokemon = () => {
+    if (pokemon && !isRevealed && !isGameOver) {
+      setScore((currentScore) => ({
+        ...currentScore,
+        skipped: currentScore.skipped + 1
+      }));
+    }
+
+    loadPokemon();
   };
 
   const handleNewGame = () => {
@@ -201,6 +235,8 @@ const PokemonQuiz = () => {
         </div>
       </div>
 
+      <p className="mode-description">{modeDescriptions[difficulty.value]}</p>
+
       <div className="lives-panel" aria-label="Lives remaining">
         <span>Lives</span>
         <strong>{lives}</strong>
@@ -234,43 +270,63 @@ const PokemonQuiz = () => {
         {isRevealed && <p className="revealed-name">{pokemon.name}</p>}
       </div>
 
-      <form className="guess-form" onSubmit={handleSubmit}>
-        <label htmlFor="guess">Your guess</label>
-        <div className="guess-row">
-          <input
-            id="guess"
-            type="text"
-            value={guess}
-            onChange={({ target }) => setGuess(target.value)}
-            placeholder="Type a Pokemon name"
-            disabled={isRevealed || isGameOver}
-          />
-          <button type="submit" disabled={isRevealed || isGameOver}>
-            Submit Guess
-          </button>
-        </div>
-      </form>
+      {isEasyMode && (
+        <section className="choices-panel" aria-label="Multiple choice answers">
+          <span>Choose one</span>
+          <div className="choice-options">
+            {answerChoices.map((choice) => {
+              const cleanChoice = choice.toLowerCase();
+              const isWrongChoice = wrongChoices.includes(cleanChoice);
+
+              return (
+                <button
+                  key={choice}
+                  type="button"
+                  className={isWrongChoice ? 'wrong-choice' : ''}
+                  onClick={() => handleChoiceClick(choice)}
+                  disabled={isRevealed || isGameOver || isWrongChoice}
+                >
+                  {choice}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {(isMediumMode || isHardMode) && (
+        <form className="guess-form" onSubmit={handleSubmit}>
+          <label htmlFor="guess">Type your guess</label>
+          <div className="guess-row">
+            <input
+              id="guess"
+              type="text"
+              value={guess}
+              onChange={({ target }) => setGuess(target.value)}
+              placeholder="Type a Pokemon name"
+              disabled={isRevealed || isGameOver}
+            />
+            <button type="submit" disabled={isRevealed || isGameOver}>
+              Submit Guess
+            </button>
+          </div>
+        </form>
+      )}
 
       {message && <p className="status-message">{message}</p>}
 
       <div className="actions">
-        <button
-          type="button"
-          className="hint-button"
-          onClick={handleHint}
-          disabled={isRevealed || isGameOver || hintsUsed === hints.length}
-        >
-          Hint
-        </button>
-        <button
-          type="button"
-          className="secondary-button"
-          onClick={handleReveal}
-          disabled={isRevealed || isGameOver}
-        >
-          Reveal Answer
-        </button>
-        <button type="button" onClick={() => loadPokemon()} disabled={isGameOver}>
+        {isMediumMode && (
+          <button
+            type="button"
+            className="hint-button"
+            onClick={handleHint}
+            disabled={isRevealed || isGameOver || hintsUsed === hints.length}
+          >
+            Hint
+          </button>
+        )}
+        <button type="button" onClick={handleNextPokemon} disabled={isGameOver}>
           Next Pokemon
         </button>
         <button type="button" className="new-game-button" onClick={handleNewGame}>
@@ -288,7 +344,7 @@ const PokemonQuiz = () => {
         </section>
       )}
 
-      {!isRevealed && hintsUsed > 0 && (
+      {isMediumMode && !isRevealed && hintsUsed > 0 && (
         <section className="hint-panel" aria-label="Hints">
           <h2>Hints</h2>
           <ul>

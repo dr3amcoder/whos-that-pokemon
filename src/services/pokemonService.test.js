@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { getRandomPokemon, POKEMON_LIMITS } from './pokemonService.js';
+import { getPokemonChoices, getRandomPokemon, POKEMON_LIMITS } from './pokemonService.js';
 
 const pokemonApiResponse = {
   id: 25,
@@ -99,6 +99,38 @@ describe('pokemonService', () => {
     const pokemon = await getRandomPokemon();
 
     expect(pokemon.image).toBe('fallback-image.png');
+  });
+
+  it('creates shuffled multiple-choice answers with the correct Pokemon included', async () => {
+    vi.spyOn(Math, 'random')
+      .mockReturnValueOnce(0.01)
+      .mockReturnValueOnce(0.02)
+      .mockReturnValueOnce(0.03)
+      .mockReturnValueOnce(0)
+      .mockReturnValueOnce(0)
+      .mockReturnValueOnce(0);
+
+    const pokemonNames = {
+      2: 'ivysaur',
+      3: 'venusaur',
+      4: 'charmander'
+    };
+
+    globalThis.fetch = vi.fn().mockImplementation((url) => {
+      const pokemonId = Number(url.split('/').pop());
+
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({
+          name: pokemonNames[pokemonId]
+        })
+      });
+    });
+
+    const choices = await getPokemonChoices({ id: 1, name: 'bulbasaur' }, 100);
+
+    expect(choices).toHaveLength(4);
+    expect(choices).toEqual(expect.arrayContaining(['bulbasaur', 'ivysaur', 'venusaur', 'charmander']));
   });
 
   it('throws a friendly error when the API request fails', async () => {

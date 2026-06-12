@@ -4,6 +4,9 @@ A fun Pokémon guessing game built with React and the PokéAPI.
 
 The player is shown a Pokémon silhouette and must guess its name before revealing the answer. Once revealed, the app displays the Pokémon's image and key stats.
 
+Live app:
+https://dr3amcoder.github.io/whos-that-pokemon/
+
 ---
 
 ## Demo
@@ -12,10 +15,11 @@ The application:
 
 1. Loads a random main-series Pokémon from PokéAPI.
 2. Displays the Pokémon as a silhouette.
-3. Allows the user to enter a guess.
-4. Checks whether the guess is correct.
-5. Reveals the Pokémon's name, image, types, and stats after a correct guess or manual reveal.
-6. Lets the user load another random Pokémon and continue playing.
+3. Changes the available controls based on the selected difficulty.
+4. Shows multiple-choice answers in Easy mode.
+5. Checks whether the selected or typed guess is correct.
+6. Reveals the Pokémon's name, image, types, and stats after a correct guess or Game Over.
+7. Lets the user load another random Pokémon and continue playing.
 
 ---
 
@@ -25,14 +29,16 @@ The application:
 
 - Random main-series Pokémon generation
 - Difficulty levels:
-  - Easy: first 151 Pokémon
-  - Medium: first 500 Pokémon
-  - Hard: first 1025 Pokémon
+  - Easy: first 151 Pokémon, multiple choice only
+  - Medium: first 500 Pokémon, typed guess with hints
+  - Hard: first 1025 Pokémon, typed guess with no hints or reveal shortcut
 - Silhouette image display
-- User guess input
+- Four multiple-choice answer buttons in Easy mode
+- User guess input in Medium and Hard modes
 - Case-insensitive answer checking
 - Whitespace-tolerant answer checking
-- Progressive hint system:
+- Wrong multiple-choice answers are disabled after being tried
+- Progressive hint system in Medium mode:
   - First letter
   - Pokémon type
   - Generation
@@ -44,9 +50,8 @@ The application:
 - Scoring system:
   - Correct guesses
   - Wrong guesses
-  - Skipped reveals
+  - Skipped rounds
   - Accuracy percentage
-- Reveal answer functionality
 - Next Pokémon functionality
 
 ### Pokémon Information
@@ -152,7 +157,7 @@ npm run dev
 The application will be available at:
 
 ```text
-http://localhost:5173
+http://localhost:5173/whos-that-pokemon/
 ```
 
 ### Run tests
@@ -210,7 +215,22 @@ Once revealed, the filter is removed.
 
 ---
 
-### 3. Validate User Guesses
+### 3. Generate Multiple Choices
+
+In Easy mode, after the random Pokémon is loaded, the app fetches three additional random Pokémon names from the same difficulty range.
+
+The choices include:
+
+- The correct Pokémon name
+- Three incorrect Pokémon names
+
+The answers are shuffled before they are displayed. Selecting a choice checks the answer immediately, which makes the game easier for younger players.
+
+Multiple-choice answers are hidden in Medium and Hard modes.
+
+---
+
+### 4. Validate User Guesses
 
 The app compares:
 
@@ -231,9 +251,9 @@ This ensures answers are:
 
 ---
 
-### 4. Reveal Pokémon Details
+### 5. Reveal Pokémon Details
 
-When the player guesses correctly or clicks **Reveal Answer**, the application displays:
+When the player guesses correctly or runs out of lives, the application displays:
 
 - Pokémon name
 - Official artwork
@@ -244,9 +264,9 @@ When the player guesses correctly or clicks **Reveal Answer**, the application d
 
 ---
 
-### 5. Use Hints
+### 6. Use Hints
 
-The player can reveal up to three hints before revealing the answer:
+In Medium mode, the player can reveal up to three hints before revealing the answer:
 
 - First letter
 - Pokémon type
@@ -255,9 +275,11 @@ The player can reveal up to three hints before revealing the answer:
 Hints reset when the player moves to the next Pokémon or changes difficulty.
 Hints are hidden once the Pokémon has been revealed.
 
+Hints are not available in Easy or Hard mode.
+
 ---
 
-### 6. Manage Lives
+### 7. Manage Lives
 
 The player starts each game with 3 lives. Each incorrect guess removes 1 life.
 
@@ -265,22 +287,24 @@ When the player reaches 0 lives:
 
 - The Pokémon is revealed
 - The Game Over screen is shown
-- Guessing, hints, and manual reveal are disabled
+- Guessing and hints are disabled
 
 The player can start over with **New Game**.
 
 ---
 
-### 7. Track Score
+### 8. Track Score
 
 The score panel tracks:
 
 - Correct guesses
 - Wrong guesses
-- Skipped reveals
+- Skipped rounds
 - Accuracy percentage
 
-Accuracy is calculated from correct and wrong guesses. Skipped reveals are tracked separately and do not reduce accuracy.
+Accuracy is calculated from correct and wrong guesses. Skipped rounds are tracked separately and do not reduce accuracy.
+
+The player can move to another Pokémon with **Next Pokemon**. If the current Pokémon has not been answered yet, this counts as a skipped round.
 
 The player can clear the scoreboard with **Reset Score**.
 
@@ -292,7 +316,7 @@ The interface uses a modern Pokémon-inspired colour palette:
 
 - Bright blue for primary actions and section accents
 - Warm yellow for hints, lives, and friendly feedback
-- Controlled red for reveal actions and important moments
+- Controlled red for important moments
 - Deep navy for readable text and contrast
 - Soft mist backgrounds to keep the app easy on the eyes
 
@@ -308,6 +332,7 @@ Current tests check that:
 
 - Difficulty limits are defined correctly
 - A random Pokémon request is made with the expected ID
+- Multiple-choice answers include the correct Pokémon and random distractors
 - API data is transformed into the shape used by the app
 - A fallback sprite is used when official artwork is unavailable
 - Failed API requests throw a friendly error message
